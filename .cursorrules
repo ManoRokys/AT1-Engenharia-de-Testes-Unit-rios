@@ -1,0 +1,30 @@
+# Regras de Contexto e Diretrizes de Código (.cursorrules)
+
+## 1. Contexto e Tecnologia
+- **Linguagem:** Python 3.12+
+- **Gerenciador de Dependências:** `uv` (projeto estruturado via `pyproject.toml`)
+- **Framework de Teste:** `pytest` com suporte a `pytest-cov`
+- **Domínio:** Motor de Análise de Crédito e Elegibilidade de Empréstimo (SUT)
+
+## 2. Padrões de Código e Tipagem
+- **Type Hints:** Obrigatório em todas as assinaturas de funções, métodos e modelos de dados (`dataclasses`).
+- **Docstrings:** Estilo Google/Sphinx documentando propósito, argumentos, retornos e exceções lançadas (`Raises`).
+- **Imutabilidade:** Utilizar `@dataclass(frozen=True)` para modelos de dados da aplicação (`ClienteProfile`, `PropostaEmprestimo`, `ResultadoAnalise`).
+- **Tratamento Defensivo:** NUNCA engolir exceções. Lançar exceções customizadas herdeiras de `CreditEngineError` para qualquer entrada inválida ou com tipo incorreto.
+
+## 3. Diretrizes para Suíte de Testes Unitários
+- **Estrutura AAA:** Todos os testes unitários DEVEM ser organizados e demarcados explicitamente nos blocos:
+  - `# Arrange` (preparação de dados e cenários)
+  - `# Act` (execução do método sob teste)
+  - `# Assert` (verificação de resultados e comportamento)
+- **Marcações Pytest:** 
+  - Utilizar a marcação `@pytest.mark.unit` em todas as funções ou classes de teste unitário.
+  - Utilizar `@pytest.mark.parametrize` para cenários de Particionamento de Equivalência (EP) e Análise do Valor Limite (BVA).
+- **Técnicas Obrigatórias:**
+  - **Equivalence Partitioning (EP):** Testar todas as classes válidas e inválidas de score, idade, prazo e renda.
+  - **Boundary Value Analysis (BVA):** Testar rigorosamente os valores limite ($min-1$, $min$, $min+1$, $max-1$, $max$, $max+1$).
+  - **Error Guessing:** Testar entradas de tipos inadequados (`bool`, `str`, `None`, `float`, `NaN`, `Inf`).
+
+## 4. Governança e Metas de Cobertura
+- **Cobertura de Código:** Meta mandatória de **100% de cobertura de código e ramificações (branch coverage)**.
+- **Comando de Validação:** `uv run pytest --cov=app --cov-branch --cov-report=term-missing`

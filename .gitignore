@@ -1,0 +1,14 @@
+# Python & Virtual Environment
+.venv/
+__pycache__/
+*.py[cod]
+
+# Testing & Coverage
+.coverage
+.pytest_cache/
+htmlcov/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
